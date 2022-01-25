@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { getCategories } from '../services'
 
+
 const Header = () => {
     const [categories, setCategories] = useState([])
 
@@ -16,7 +17,7 @@ const Header = () => {
                 <div className='md:float-left block'>
                     <Link href="/">
                         <span className='cursor-pointer font-bold text-4xl text-white'>
-                            Code Reps
+                            Game Set Code
                         </span>
                     </Link>
                 </div>
