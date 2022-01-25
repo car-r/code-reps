@@ -1,46 +1,47 @@
 import React from 'react'
 import Image from 'next/dist/client/image'
 import moment from 'moment'
+import { RichText } from '@graphcms/rich-text-react-renderer';
 
 const PostDetail = ({ post }) => {
-    const getContentFragment = (index, text, obj, type) => {
-        let modifiedText = text;
+    // const getContentFragment = (index, text, obj, type) => {
+    //     let modifiedText = text;
     
-        if (obj) {
-          if (obj.bold) {
-            modifiedText = (<b key={index}>{text}</b>);
-          }
+    //     if (obj) {
+    //       if (obj.bold) {
+    //         modifiedText = (<b key={index}>{text}</b>);
+    //       }
     
-          if (obj.italic) {
-            modifiedText = (<em key={index}>{text}</em>);
-          }
+    //       if (obj.italic) {
+    //         modifiedText = (<em key={index}>{text}</em>);
+    //       }
     
-          if (obj.underline) {
-            modifiedText = (<u key={index}>{text}</u>);
-          }
-        }
+    //       if (obj.underline) {
+    //         modifiedText = (<u key={index}>{text}</u>);
+    //       }
+    //     }
     
-        switch (type) {
-          case 'heading-three':
-            return <h3 key={index} className="text-xl font-semibold mb-4">{modifiedText.map((item, i) => <React.Fragment key={i}>{item}</React.Fragment>)}</h3>;
-          case 'paragraph':
-            return <p key={index} className="mb-8">{modifiedText.map((item, i) => <React.Fragment key={i}>{item}</React.Fragment>)}</p>;
-          case 'heading-four':
-            return <h4 key={index} className="text-md font-semibold mb-4">{modifiedText.map((item, i) => <React.Fragment key={i}>{item}</React.Fragment>)}</h4>;
-          case 'image':
-            return (
-              <img
-                key={index}
-                alt={obj.title}
-                height={obj.height}
-                width={obj.width}
-                src={obj.src}
-              />
-            );
-          default:
-            return modifiedText;
-        }
-      };
+    //     switch (type) {
+    //       case 'heading-three':
+    //         return <h3 key={index} className="text-xl font-semibold mb-4">{modifiedText.map((item, i) => <React.Fragment key={i}>{item}</React.Fragment>)}</h3>;
+    //       case 'paragraph':
+    //         return <p key={index} className="mb-8">{modifiedText.map((item, i) => <React.Fragment key={i}>{item}</React.Fragment>)}</p>;
+    //       case 'heading-four':
+    //         return <h4 key={index} className="text-md font-semibold mb-4">{modifiedText.map((item, i) => <React.Fragment key={i}>{item}</React.Fragment>)}</h4>;
+    //       case 'image':
+    //         return (
+    //           <img
+    //             key={index}
+    //             alt={obj.title}
+    //             height={obj.height}
+    //             width={obj.width}
+    //             src={obj.src}
+    //           />
+    //         );
+    //       default:
+    //         return modifiedText;
+    //     }
+    //   };
 
     return (
         <div className='bg-gray-700 bg-opacity-30 rounded-lg lg:p-8 pb-12 mb-8'>
@@ -71,11 +72,30 @@ const PostDetail = ({ post }) => {
                         <span className="align-middle font-thin">{moment(post.createdAt).format('MMM DD, YYYY')}</span> 
                     </div>
                 </div>
-                <h1 className='mb-8 text-3xl font-semibold'>{post.title}</h1>
-                {post.content.raw.children.map((typeObj, index) => {
+                <h1 className='mb-8 text-2xl md:text-3xl font-semibold'>{post.title}</h1>
+                
+                {/* {post.content.raw.children.map((typeObj, index) => {
                     const children = typeObj.children.map((item, itemIndex) => getContentFragment(itemIndex, item.text, item))
                     return getContentFragment(index, children, typeObj, typeObj.type)
-                })}
+                })} */}
+
+                <RichText 
+                  content={post.content.raw}
+                  renderers={{
+                      p: ({ children }) => <p className='mb-4'>{children}</p>,
+                      h3: ({ children }) => <h3 className="text-xl font-semibold mb-4">{children}</h3>,
+                      h4: ({ children }) => <h4 className="text-lg font-semibold mb-4">{children}</h4>,
+                      bold: ({children}) => <b className='font-semibold'>{children}</b>,
+                      italic: ({children}) => <em className=''>{children}</em>,
+                      underline: ({ children }) => <u className=''>{children}</u>, 
+                      ul: ({ children }) => <ul className='py-6'>{children}</ul>,
+                      li: ({ children }) => <li className='flex items-center'><span className='text-3xl pb-1 pr-1'>•</span>{children}</li>,
+                      a: ({ children, href }) => <a href={href} className='text-blue-400 hover:underline'>{children}</a>,
+                      blockquote: ({ children }) => <blockquote className="italic border-l-4 border-gray-300 pl-6 mb-8 py-4 text-lg">{children}</blockquote>,
+                      code_block: ({ children }) => <code className="text-xs mb-4 bg-gray-300  bg-opacity-50 rounded-lg p-4 border-2 border-gray-300 leading-loose block whitespace-pre overflow-x-scroll">{children}</code>,
+                      img: ({ src, altText, height, width }) => (<div className='mb-4'><Image src={src} alt={altText} height={height} width={width} objectFit='cover'/></div>),
+                  }}
+                />
             </div>
         </div>
     )
