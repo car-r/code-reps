@@ -32,7 +32,7 @@ const CategoryPost = ({ posts }) => {
 
 export default CategoryPost;
 
-// Fetch data at build time
+// Fetch data from graphCMS at build time
 export async function getStaticProps({ params }) {
     const posts = await getCategoryPost(params.slug);
   
@@ -41,7 +41,7 @@ export async function getStaticProps({ params }) {
     };
   }
   
-  // Specify dynamic routes to pre-render pages based on data.
+  // Determine dynamic pre-rendered routes to pages based on data fetched from graphCMS.
   // The HTML is generated at build time and will be reused on each request.
   export async function getStaticPaths() {
     const categories = await getCategories();
