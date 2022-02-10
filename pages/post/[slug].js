@@ -1,3 +1,4 @@
+import { useRouter } from 'next/dist/client/router'
 import React from 'react'
 import Author from '../../components/Author'
 import Categories from '../../components/Categories'
@@ -10,6 +11,11 @@ import { getPosts, getPostDetails } from '../../services'
 
 const PostDetails = ({ post }) => {
     console.log(post)
+    const router = useRouter()
+    if(router.isFallback) {
+        return <div>Loading....</div>
+    }
+    
     return (
         <div className='text-white container mx-auto px-6 sm:px-10 mb-8'>
             <div className='grid grid-cols-1 lg:grid-cols-12 gap-12'>
@@ -46,6 +52,6 @@ export async function getStaticPaths() {
 
     return {
         paths: posts.map(({ node: { slug }}) => ({ params: { slug }})),
-        fallback: false,
+        fallback: true,
     }
 }
