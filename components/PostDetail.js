@@ -42,6 +42,7 @@ const PostDetail = ({ post }) => {
                   content={post.content.raw}
                   renderers={{
                       p: ({ children }) => <p className='mb-4'>{children}</p>,
+                      h2: ({ children }) => <h2 className="text-2xl font-semibold mb-4">{children}</h2>,
                       h3: ({ children }) => <h3 className="text-xl font-semibold mb-4">{children}</h3>,
                       h4: ({ children }) => <h4 className="text-lg font-semibold mb-4">{children}</h4>,
                       bold: ({children}) => <b className='font-semibold'>{children}</b>,
